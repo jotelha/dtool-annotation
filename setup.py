@@ -14,7 +14,16 @@ setup(
     author="Tjelvar Olsson",
     author_email="tjelvar.olsson@jic.ac.uk",
     url=url,
-    install_requires=[],
+    install_requires=[
+        "click",
+        "dtoolcore",
+        "dtool-cli",
+    ],
+    entry_points={
+        "dtool.cli": [
+            "annotation=dtool_annotation.cli:annotation",
+        ],
+    },
     download_url="{}/tarball/{}".format(url, version),
     license="MIT"
 )
