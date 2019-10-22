@@ -45,10 +45,10 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u"dtool_annotation"
+project = u"dtool-annotation"
 copyright = u"2019, Tjelvar Olsson"
 author = u"Tjelvar Olsson"
-repo_name = u"dtool_annotation"
+repo_name = u"dtool-annotation"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

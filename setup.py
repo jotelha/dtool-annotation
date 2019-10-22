@@ -5,7 +5,7 @@ version = "0.1.0"
 readme = open('README.rst').read()
 
 setup(
-    name="dtool_annotation",
+    name="dtool-annotation",
     packages=["dtool_annotation"],
     version=version,
     description="Add ability to annotate datasets using the dtool CLI",
