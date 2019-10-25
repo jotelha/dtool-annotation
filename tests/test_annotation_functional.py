@@ -213,10 +213,12 @@ def test_ls_command(tmp_dataset_fixture):  # NOQA
     ])
     assert result.exit_code == 0
 
-    expected_lines = [
-        "params\t{u'x': 3}",
-        "project\tworld-peace",
-        "stars\t3"
+    expectations = [
+        ("params", "x': 3}"),
+        ("project", "world-peace"),
+        ("stars", "3")
     ]
-    for e, a in zip(expected_lines, result.output.strip().split("\n")):
-        assert e == a
+    for e, a in zip(expectations, result.output.strip().split("\n")):
+        assert a.count("\t") == 1
+        assert a.startswith(e[0])
+        assert a.endswith(e[1])
