@@ -16,7 +16,7 @@ setup(
     url=url,
     install_requires=[
         "click",
-        "dtoolcore",
+        "dtoolcore>=3.13.0",
         "dtool-cli",
     ],
     entry_points={
