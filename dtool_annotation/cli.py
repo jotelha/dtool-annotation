@@ -4,8 +4,30 @@ import sys
 
 import dtoolcore
 import click
+import json
 
 from dtool_cli.cli import base_dataset_uri_argument
+
+
+def _force_bool(s):
+    s = s.strip().lower()
+    if s == "0" or s == "false" or s == "f":
+        return False
+    return True
+
+
+def _force_json(s):
+    return json.loads(s)
+
+
+TYPE_CHOICES = ["str", "int", "float", "bool", "json"]
+TYPE_FUNCTION_LOOKUP = {
+    "str": str,
+    "int": int,
+    "float": float,
+    "bool": _force_bool,
+    "json": _force_json
+}
 
 
 def _validate_name(name):
@@ -32,7 +54,13 @@ def annotation():
 @base_dataset_uri_argument
 @click.argument("key")
 @click.argument("value")
-def set_annotation(dataset_uri, key, value):
+@click.option(
+    "-t",
+    "--type",
+    type=click.Choice(TYPE_CHOICES),
+    default="str"
+)
+def set_annotation(dataset_uri, key, value, type):
     """Set dataset annotation (key/value pair)."""
     try:
         dataset = dtoolcore.ProtoDataSet.from_uri(
@@ -46,6 +74,12 @@ def set_annotation(dataset_uri, key, value):
         )
 
     _validate_name(key)
+
+    try:
+        value = TYPE_FUNCTION_LOOKUP[type](value)
+    except ValueError as e:
+        click.secho(str(e).capitalize(), err=True, fg="red")
+        sys.exit(402)
     dataset.put_annotation(key, value)
 
 

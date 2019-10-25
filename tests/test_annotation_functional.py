@@ -56,7 +56,6 @@ def test_annotation_invalid_name(tmp_dataset_fixture):  # NOQA
         assert result.output.find(line) != -1
 
 
-
 def test_get_non_existing_annotation(tmp_dataset_fixture):  # NOQA
 
     from dtool_annotation.cli import annotation
@@ -71,3 +70,104 @@ def test_get_non_existing_annotation(tmp_dataset_fixture):  # NOQA
     assert result.exit_code == 401
     expected = "No annotation named: 'project'"
     assert result.output.strip() == expected
+
+
+def test_annotation_types(tmp_dataset_fixture):  # NOQA
+
+    from dtool_annotation.cli import annotation
+
+    runner = CliRunner()
+
+    # Default to string
+    result = runner.invoke(annotation, [
+        "set",
+        tmp_dataset_fixture.uri,
+        "one_as_str",
+        "1"
+    ])
+    assert result.exit_code == 0
+    assert tmp_dataset_fixture.get_annotation("one_as_str") == "1"
+
+    # Explicit set to string.
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "str",
+        tmp_dataset_fixture.uri,
+        "one_as_str_explicit",
+        "1"
+    ])
+    assert result.exit_code == 0
+    assert tmp_dataset_fixture.get_annotation("one_as_str_explicit") == "1"
+
+    # Explicit set to int.
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "int",
+        tmp_dataset_fixture.uri,
+        "one_as_int_explicit",
+        "1"
+    ])
+    assert result.exit_code == 0
+    assert tmp_dataset_fixture.get_annotation("one_as_int_explicit") == 1
+
+    # Explicit set to float.
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "float",
+        tmp_dataset_fixture.uri,
+        "one_as_float_explicit",
+        "1"
+    ])
+    assert result.exit_code == 0
+
+    ann = tmp_dataset_fixture.get_annotation("one_as_float_explicit")
+    offset = 0.00000001
+    assert ann > 1 - offset
+    assert ann < 1 + offset
+    assert isinstance(ann, float)
+
+    # Explicit set to bool.
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "bool",
+        tmp_dataset_fixture.uri,
+        "true_as_bool_explicit",
+        "1"
+    ])
+    assert result.exit_code == 0
+
+    ann = tmp_dataset_fixture.get_annotation("true_as_bool_explicit")
+    assert ann
+    assert isinstance(ann, bool)
+
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "bool",
+        tmp_dataset_fixture.uri,
+        "false_as_bool_explicit",
+        "0"
+    ])
+    assert result.exit_code == 0
+
+    ann = tmp_dataset_fixture.get_annotation("false_as_bool_explicit")
+    assert not ann
+    assert isinstance(ann, bool)
+
+    # Explicit set to json.
+    result = runner.invoke(annotation, [
+        "set",
+        "--type",
+        "json",
+        tmp_dataset_fixture.uri,
+        "json_explicit",
+        '{"x": 3, "y": 5}'
+    ])
+    assert result.exit_code == 0
+
+    ann = tmp_dataset_fixture.get_annotation("json_explicit")
+    assert ann == {"x": 3, "y": 5}
