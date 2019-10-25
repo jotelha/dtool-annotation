@@ -171,3 +171,52 @@ def test_annotation_types(tmp_dataset_fixture):  # NOQA
 
     ann = tmp_dataset_fixture.get_annotation("json_explicit")
     assert ann == {"x": 3, "y": 5}
+
+
+def test_ls_command(tmp_dataset_fixture):  # NOQA
+
+    from dtool_annotation.cli import annotation
+
+    runner = CliRunner()
+
+    result = runner.invoke(annotation, [
+        "set",
+        tmp_dataset_fixture.uri,
+        "project",
+        "world-peace"
+    ])
+    assert result.exit_code == 0
+
+    result = runner.invoke(annotation, [
+        "set",
+        tmp_dataset_fixture.uri,
+        "stars",
+        "3",
+        "--type",
+        "int"
+    ])
+    assert result.exit_code == 0
+
+    result = runner.invoke(annotation, [
+        "set",
+        tmp_dataset_fixture.uri,
+        "params",
+        '{"x": 3}',
+        "--type",
+        "json"
+    ])
+    assert result.exit_code == 0
+
+    result = runner.invoke(annotation, [
+        "ls",
+        tmp_dataset_fixture.uri,
+    ])
+    assert result.exit_code == 0
+
+    expected_lines = [
+        "params\t{u'x': 3}",
+        "project\tworld-peace",
+        "stars\t3"
+    ]
+    for e, a in zip(expected_lines, result.output.strip().split("\n")):
+        assert e == a

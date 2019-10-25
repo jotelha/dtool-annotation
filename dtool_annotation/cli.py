@@ -107,3 +107,22 @@ def get_annotation(dataset_uri, key):
             fg="red"
         )
         sys.exit(401)
+
+
+@annotation.command(name="ls")
+@base_dataset_uri_argument
+def list_annotations(dataset_uri):
+    """List the dataset annotations."""
+    try:
+        dataset = dtoolcore.ProtoDataSet.from_uri(
+            uri=dataset_uri,
+            config_path=dtoolcore.utils.DEFAULT_CONFIG_PATH
+        )
+    except dtoolcore.DtoolCoreTypeError:
+        dataset = dtoolcore.DataSet.from_uri(
+            uri=dataset_uri,
+            config_path=dtoolcore.utils.DEFAULT_CONFIG_PATH
+        )
+    for name in sorted(dataset.list_annotation_names()):
+        value = str(dataset.get_annotation(name))
+        click.secho("{}\t{}".format(name, value))
