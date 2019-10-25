@@ -31,3 +31,14 @@ Security
 ^^^^^^^^
 
 
+[0.1.0] - 2019-10-25
+--------------------
+
+Initial release.
+
+Added
+^^^^^
+
+- The CLI command 'dtool annotate set'
+- The CLI command 'dtool annotate get'
+- The CLI command 'dtool annotate ls'
