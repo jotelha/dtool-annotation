@@ -64,4 +64,12 @@ def get_annotation(dataset_uri, key):
             uri=dataset_uri,
             config_path=dtoolcore.utils.DEFAULT_CONFIG_PATH
         )
-    click.secho(str(dataset.get_annotation(key)))
+    try:
+        click.secho(str(dataset.get_annotation(key)))
+    except dtoolcore.DtoolCoreKeyError:
+        click.secho(
+            "No annotation named: '{}'".format(key),
+            err=True,
+            fg="red"
+        )
+        sys.exit(401)

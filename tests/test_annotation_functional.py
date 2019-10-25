@@ -54,3 +54,20 @@ def test_annotation_invalid_name(tmp_dataset_fixture):  # NOQA
     ]
     for line in expected_lines:
         assert result.output.find(line) != -1
+
+
+
+def test_get_non_existing_annotation(tmp_dataset_fixture):  # NOQA
+
+    from dtool_annotation.cli import annotation
+
+    runner = CliRunner()
+
+    result = runner.invoke(annotation, [
+        "get",
+        tmp_dataset_fixture.uri,
+        "project",
+    ])
+    assert result.exit_code == 401
+    expected = "No annotation named: 'project'"
+    assert result.output.strip() == expected
