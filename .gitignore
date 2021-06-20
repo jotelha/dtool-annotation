@@ -6,3 +6,4 @@
 .eggs
 .pytest_cache
 .tox
+dist
