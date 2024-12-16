@@ -10,10 +10,16 @@ This change log uses principles from `keep a changelog <http://keepachangelog.co
 Added
 ^^^^^
 
+- The CLI command 'dtool annotation delete'
+- github CI test workflow
+- github CI publication workflow
+- Activated dependabot
 
 Changed
 ^^^^^^^
 
+- Moved from ``setup.py`` to ``pyproject.toml``
+- Dynamic versioning
 
 Deprecated
 ^^^^^^^^^^

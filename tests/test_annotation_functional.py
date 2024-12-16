@@ -30,6 +30,23 @@ def test_annotation_basic(tmp_dataset_fixture):  # NOQA
     actual = result.output.strip()
     assert actual == expected
 
+    result = runner.invoke(annotation, [
+        "delete",
+        tmp_dataset_fixture.uri,
+        "project"
+    ])
+    assert result.exit_code == 0
+
+    result = runner.invoke(annotation, [
+        "get",
+        tmp_dataset_fixture.uri,
+        "project"
+    ])
+    assert result.exit_code != 0
+    expected = "No annotation named: 'project'"
+    actual = result.output.strip()
+    assert actual == expected
+
 
 def test_annotation_invalid_name(tmp_dataset_fixture):  # NOQA
 
@@ -70,6 +87,20 @@ def test_get_non_existing_annotation(tmp_dataset_fixture):  # NOQA
     assert result.exit_code == 401
     expected = "No annotation named: 'project'"
     assert result.output.strip() == expected
+
+
+def test_delete_non_existing_annotation(tmp_dataset_fixture):  # NOQA
+
+    from dtool_annotation.cli import annotation
+
+    runner = CliRunner()
+
+    result = runner.invoke(annotation, [
+        "delete",
+        tmp_dataset_fixture.uri,
+        "project",
+    ])
+    assert result.exit_code == 0
 
 
 def test_annotation_types(tmp_dataset_fixture):  # NOQA
