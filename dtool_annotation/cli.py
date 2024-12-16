@@ -126,3 +126,21 @@ def list_annotations(dataset_uri):
     for name in sorted(dataset.list_annotation_names()):
         value = str(dataset.get_annotation(name))
         click.secho("{}\t{}".format(name, value))
+
+
+@annotation.command(name="delete")
+@base_dataset_uri_argument
+@click.argument("key")
+def delete_annotation(dataset_uri, key):
+    """Delete dataset annotation."""
+    try:
+        dataset = dtoolcore.ProtoDataSet.from_uri(
+            uri=dataset_uri,
+            config_path=dtoolcore.utils.DEFAULT_CONFIG_PATH
+        )
+    except dtoolcore.DtoolCoreTypeError:
+        dataset = dtoolcore.DataSet.from_uri(
+            uri=dataset_uri,
+            config_path=dtoolcore.utils.DEFAULT_CONFIG_PATH
+        )
+    dataset.delete_annotation(key)
