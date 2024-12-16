@@ -11,11 +11,15 @@ Added
 ^^^^^
 
 - The CLI command 'dtool annotation delete'
+- github CI test workflow
+- github CI publication workflow
 
 
 Changed
 ^^^^^^^
 
+- Moved from ``setup.py`` to ``pyproject.toml``
+- Dynamic versioning
 
 Deprecated
 ^^^^^^^^^^

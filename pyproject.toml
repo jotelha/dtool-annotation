@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools_scm[toml]>=6.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dtool-annotation"
+description = "Add ability to annotate datasets using the dtool CLI"
+authors = [
+    {name = "Tjelvar Olsson", email = "tjelvar.olsson@gmail.com"},
+    {name = "Johannes L. Hörmann", email = "johannes.laurin@gmail.com"},
+]
+readme = "README.rst"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+dependencies = [
+    "click",
+    "dtoolcore>=3.19.0",
+    "dtool-cli",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov"
+]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-spelling"
+]
+
+[project.urls]
+Repository = "https://github.com/jic-dtool/dtool-annotation"
+Documentation = "https://github.com/jic-dtool/dtool-annotation/blob/master/README.rst"
+Changelog = "https://github.com/jic-dtool/dtool-annotation/blob/master/CHANGELOG.rst"
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+write_to = "dtool_annotation/version.py"
+
+[tool.setuptools]
+packages = ["dtool_annotation"]
+
+[project.entry-points."dtool.cli"]
+annotation = "dtool_annotation.cli:annotation"
