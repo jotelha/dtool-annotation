@@ -13,7 +13,7 @@ Added
 - The CLI command 'dtool annotation delete'
 - github CI test workflow
 - github CI publication workflow
-
+- Activated dependabot
 
 Changed
 ^^^^^^^
